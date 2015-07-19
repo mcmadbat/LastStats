@@ -13,4 +13,21 @@
         android:elevation="4dp"
         />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Test Call"
+        android:id="@+id/btnTest"
+        android:onClick="testCall"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:id="@+id/textView"
+        android:layout_below="@+id/actionBar"
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>

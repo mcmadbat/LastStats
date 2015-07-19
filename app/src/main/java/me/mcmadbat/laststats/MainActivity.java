@@ -9,8 +9,15 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
-import me.mcmadbat.laststats.*;
+import org.apache.http.protocol.HTTP;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import me.mcmadbat.laststats.Helpers.Constants;
+import me.mcmadbat.laststats.Helpers.HttpHelper;
 
 /*The main activity where all stats are displayed*/
 public class MainActivity extends AppCompatActivity {
@@ -18,9 +25,34 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sharedPref;
     SharedPreferences.Editor e;
 
+    public void testCall(View v){
+        String u = Constants.URL_ROOT + "?method=user.gettopartists&user=mcmadbat3&format=json&api_key=" + Constants.KEY;
+
+        HttpHelper httpHelper = new HttpHelper();
+
+
+
+        TextView txt = (TextView) findViewById(R.id.textView);
+
+        try {
+            JSONObject json = new JSONObject(httpHelper.HttpGet(u));
+            json = json.getJSONObject("topartists");
+            JSONArray artists = json.getJSONArray("artist");
+
+            String output = artists.getJSONObject(0).getString("name");
+            txt.setText(output);
+        }
+        catch (Exception e){
+            Log.wtf("INFO", e.getMessage());
+        }
+
+
+
+    }
+
     //region Constants Methods
     private void updateConstants(){
-
+        Constants.updateFromFile();
     }
 
     private void saveConstants(){
@@ -42,9 +74,6 @@ public class MainActivity extends AppCompatActivity {
         //This sets the action bar
         Toolbar actionbar = (Toolbar) findViewById(R.id.actionBar);
         setSupportActionBar(actionbar);
-
-        Intent intent = new Intent(this,SignInActivity.class);
-        startActivity(intent);
     }
 
     @Override
