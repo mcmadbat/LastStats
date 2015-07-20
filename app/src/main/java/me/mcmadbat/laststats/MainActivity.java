@@ -18,6 +18,7 @@ import org.json.JSONObject;
 
 import me.mcmadbat.laststats.Helpers.Constants;
 import me.mcmadbat.laststats.Helpers.HttpHelper;
+import me.mcmadbat.laststats.Helpers.LfmApiHelper;
 
 /*The main activity where all stats are displayed*/
 public class MainActivity extends AppCompatActivity {
@@ -26,11 +27,8 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences.Editor e;
 
     public void testCall(View v){
-        String u = Constants.URL_ROOT + "?method=user.gettopartists&user=mcmadbat3&format=json&api_key=" + Constants.KEY;
-
+        String u = LfmApiHelper.getTopAlbums("mcmadbat3", null, null, null);
         HttpHelper httpHelper = new HttpHelper();
-
-
 
         TextView txt = (TextView) findViewById(R.id.textView);
 
@@ -45,8 +43,6 @@ public class MainActivity extends AppCompatActivity {
         catch (Exception e){
             Log.wtf("INFO", e.getMessage());
         }
-
-
 
     }
 
