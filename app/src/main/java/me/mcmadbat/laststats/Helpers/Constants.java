@@ -10,6 +10,7 @@ public final class Constants {
 
     /*Keys and stuff*/
     public static String KEY = "9d60dd5787a7a7bc7db25552db7e31ac";
+    public static String SECRET = "3619fdf6507a96471c380920a508f797";
 
     /*Urls and stuff*/
     public static String URL_ROOT = "http://ws.audioscrobbler.com/2.0/";
@@ -17,10 +18,4 @@ public final class Constants {
     /*Current User Information*/
     public static String user_name = "mcmadbat3";
     public static Boolean user_exist = true;
-
-    //TODO get info from user in final release
-    public static void updateFromFile()
-    {
-
-    }
 }

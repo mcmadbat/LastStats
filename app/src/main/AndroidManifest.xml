@@ -20,15 +20,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".SignInActivity"
-            android:label="@string/title_activity_sign_in"
-            android:parentActivityName=".MainActivity"
-            android:launchMode="singleTop">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="me.mcmadbat.laststats.MainActivity" />
-        </activity>
     </application>
 
 </manifest>

@@ -15,6 +15,9 @@ import android.widget.TextView;
 import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
+
+import java.util.List;
 
 import me.mcmadbat.laststats.Helpers.Constants;
 import me.mcmadbat.laststats.Helpers.HttpHelper;
@@ -27,45 +30,21 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences.Editor e;
 
     public void testCall(View v){
-        String u = LfmApiHelper.getTopAlbums("mcmadbat3", null, null, null);
-        HttpHelper httpHelper = new HttpHelper();
+        List<String> o = LfmApiHelper.getTopArtists("mcmadbat3",null,null,null);
 
         TextView txt = (TextView) findViewById(R.id.textView);
-
-        try {
-            JSONObject json = new JSONObject(httpHelper.HttpGet(u));
-            json = json.getJSONObject("topartists");
-            JSONArray artists = json.getJSONArray("artist");
-
-            String output = artists.getJSONObject(0).getString("name");
-            txt.setText(output);
+        String cur = "";
+        for (int x = 0; x < o.size(); x++) {
+            cur += o.get(x) + "\n";
         }
-        catch (Exception e){
-            Log.wtf("INFO", e.getMessage());
-        }
-
+        txt.setText(cur);
     }
-
-    //region Constants Methods
-    private void updateConstants(){
-        Constants.updateFromFile();
-    }
-
-    private void saveConstants(){
-
-    }
-    //endregion
 
     //region Lifecycle Methods
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        updateConstants();
         setContentView(R.layout.activity_main);
-
-         /*Reads from SharePreferences to see if some data are saved*/
-        sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        e = sharedPref.edit();
 
         //This sets the action bar
         Toolbar actionbar = (Toolbar) findViewById(R.id.actionBar);
@@ -74,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStop(){
-        saveConstants();
         super.onStop();
         Log.i("INFO", "Main Activity stopped");
     }

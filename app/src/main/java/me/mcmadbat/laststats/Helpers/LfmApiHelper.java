@@ -2,6 +2,14 @@ package me.mcmadbat.laststats.Helpers;
 
 import android.support.annotation.Nullable;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by David on 2015-07-19.
  *
@@ -15,8 +23,8 @@ public final class LfmApiHelper {
 
     //region API Methods
 
-    //this method returns the url for the api method get top artists
-    public static String getTopArtists (String user, @Nullable String period, @Nullable String limit, @Nullable String page){
+    //this method returns the results for the api method get top artists
+    public static List<String> getTopArtists (String user, @Nullable String period, @Nullable String limit, @Nullable String page){
         String url = URL_ROOT + "?method=user.gettopartists&format=json&api_key=" + KEY + "&user=" + user;
 
         if (period != null && period != "") {
@@ -31,7 +39,26 @@ public final class LfmApiHelper {
             url+= "&page=" + page;
         }
 
-        return url;
+        HttpHelper httpHelper = new HttpHelper();
+
+        List<String> r = new ArrayList<String>();
+        try {
+            JSONObject response = new JSONObject(httpHelper.HttpGet(url));
+            response = response.getJSONObject("topartists");
+
+            JSONArray arr = response.getJSONArray("artist");
+
+            for (int i =0; i < arr.length(); i++) {
+                JSONObject temp = arr.getJSONObject(i);
+                r.add(temp.getString("name"));
+            }
+
+        }
+        catch (Exception e){
+
+        }
+
+        return r;
     }
 
     //this method returns the url for the api method get top tracks
@@ -72,4 +99,5 @@ public final class LfmApiHelper {
         return url;
     }
     //endregion
+
 }
