@@ -1,6 +1,7 @@
 package me.mcmadbat.laststats.Helpers;
 
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -50,19 +51,21 @@ public final class LfmApiHelper {
 
             for (int i =0; i < arr.length(); i++) {
                 JSONObject temp = arr.getJSONObject(i);
-                r.add(temp.getString("name"));
+                String line ="";
+                line += temp.getString("name") + "~~";
+                line += temp.getString("playcount") + "~~";
+                r.add(line);
             }
-
         }
         catch (Exception e){
-
+            Log.wtf("INFO", e.getMessage());
         }
 
         return r;
     }
 
     //this method returns the url for the api method get top tracks
-    public static String getTopTracks (String user, @Nullable String period, @Nullable String limit, @Nullable String page){
+    public static List<String> getTopTracks (String user, @Nullable String period, @Nullable String limit, @Nullable String page){
         String url = URL_ROOT + "?method=user.gettoptracks&format=json&api_key=" + KEY + "&user=" + user;
 
         if (period != null && period != "") {
@@ -77,11 +80,32 @@ public final class LfmApiHelper {
             url+= "&page=" + page;
         }
 
-        return url;
+        HttpHelper httpHelper = new HttpHelper();
+
+        List<String> r = new ArrayList<String>();
+        try {
+            JSONObject response = new JSONObject(httpHelper.HttpGet(url));
+            response = response.getJSONObject("toptracks");
+
+            JSONArray arr = response.getJSONArray("track");
+
+            for (int i =0; i < arr.length(); i++) {
+                JSONObject temp = arr.getJSONObject(i);
+                String line ="";
+                line += temp.getString("name") + "~~";
+                line += temp.getString("playcount") + "~~";
+                r.add(line);
+            }
+        }
+        catch (Exception e){
+            Log.wtf("INFO", e.getMessage());
+        }
+
+        return r;
     }
 
     //this method returns the url for the api method get top tracks
-    public static String getTopAlbums (String user, @Nullable String period, @Nullable String limit, @Nullable String page){
+    public static List<String> getTopAlbums (String user, @Nullable String period, @Nullable String limit, @Nullable String page){
         String url = URL_ROOT + "?method=user.gettopalbums&format=json&api_key=" + KEY + "&user=" + user;
 
         if (period != null && period != "") {
@@ -96,7 +120,28 @@ public final class LfmApiHelper {
             url+= "&page=" + page;
         }
 
-        return url;
+        HttpHelper httpHelper = new HttpHelper();
+
+        List<String> r = new ArrayList<String>();
+        try {
+            JSONObject response = new JSONObject(httpHelper.HttpGet(url));
+            response = response.getJSONObject("topalbums");
+
+            JSONArray arr = response.getJSONArray("album");
+
+            for (int i =0; i < arr.length(); i++) {
+                JSONObject temp = arr.getJSONObject(i);
+                String line ="";
+                line += temp.getString("name") + "~~";
+                line += temp.getString("playcount") + "~~";
+                r.add(line);
+            }
+        }
+        catch (Exception e){
+            Log.wtf("INFO", e.getMessage());
+        }
+
+        return r;
     }
     //endregion
 
