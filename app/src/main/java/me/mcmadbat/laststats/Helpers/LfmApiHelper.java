@@ -23,7 +23,6 @@ public final class LfmApiHelper {
     private static String URL_ROOT = "http://ws.audioscrobbler.com/2.0/"; //the url root for all the calls
 
     //region API Methods
-
     //this method returns the results for the api method get top artists
     public static List<String> getTopArtists (String user, @Nullable String period, @Nullable String limit, @Nullable String page){
         String url = URL_ROOT + "?method=user.gettopartists&format=json&api_key=" + KEY + "&user=" + user;
@@ -135,6 +134,28 @@ public final class LfmApiHelper {
                 line += temp.getString("name") + "~~";
                 line += temp.getString("playcount") + "~~";
                 r.add(line);
+            }
+        }
+        catch (Exception e){
+            Log.wtf("INFO", e.getMessage());
+        }
+
+        return r;
+    }
+
+    //gets the user info of the user
+    public static List<String> getUserInfo (String user) {
+        String url = URL_ROOT + "?method=user.getinfo&format=json&api_key=" + KEY + "&user=" + user;
+        HttpHelper httpHelper = new HttpHelper();
+
+        List<String> r = new ArrayList<String>();
+        try {
+            JSONObject response = new JSONObject(httpHelper.HttpGet(url));
+            response = response.getJSONObject("user");
+
+            if (response != null){
+                r.add(response.getString("name")); //the user name
+                r.add(response.getString("realname")); //the real name
             }
         }
         catch (Exception e){

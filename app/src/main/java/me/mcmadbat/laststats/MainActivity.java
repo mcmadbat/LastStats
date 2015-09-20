@@ -3,6 +3,7 @@ package me.mcmadbat.laststats;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -11,19 +12,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import java.io.File;
+
 import br.liveo.Model.HelpLiveo;
 import br.liveo.interfaces.OnItemClickListener;
 import br.liveo.interfaces.OnPrepareOptionsMenuLiveo;
 import br.liveo.navigationliveo.NavigationLiveo;
+import me.mcmadbat.laststats.Fragments.HomeFragment;
+import me.mcmadbat.laststats.Fragments.LoginFragment;
 import me.mcmadbat.laststats.Fragments.TopListFragment;
 import me.mcmadbat.laststats.Fragments.ViewPagerFragment;
+import me.mcmadbat.laststats.Helpers.UserHelper;
 
 
 /*The main activity where all stats are displayed*/
 public class MainActivity extends NavigationLiveo implements OnItemClickListener {
-
-    SharedPreferences sharedPref;
-    SharedPreferences.Editor editor;
+    UserHelper user = null;
 
     private HelpLiveo mHelpLiveo;
 
@@ -36,7 +40,17 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
     }
 
     @Override
+    public void onPause() {
+        super.onPause();  // Always call the superclass method first
+        user.saveToMemory();
+    }
+
+    @Override
     protected void onResume() {
+        if (user != null){
+            updateDrawerFromUser(user);
+        }
+
         Log.i("INFO", "Main Activity resumed.");
         super.onResume();
     }
@@ -64,27 +78,16 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
     @Override
     public void onInt(Bundle savedInstanceState) {
 
-        sharedPref = getPreferences(Context.MODE_PRIVATE);
-        editor = sharedPref.edit();
+        File t = new File(getApplicationContext().getFilesDir(),"UserInfo.txt");
+        user = new UserHelper(t);
 
-        String user = sharedPref.getString("user", "mcmadbat3");
-        String realname = sharedPref.getString("realname", "David Zhang");
-
-        if (user == ""){
-            //// TODO: Prompt the User to enter name
-        }
-
-        // User Information
-        this.userName.setText(user);
-        this.userEmail.setText(realname);
-        this.userPhoto.setImageResource(R.drawable.ic_rudsonlive);
-
-        this.userBackground.setImageResource(R.drawable.ic_user_background_first);
+        updateDrawerFromUser(user);
 
         // Creating items navigation
         mHelpLiveo = new HelpLiveo();
-        mHelpLiveo.addSubHeader("Timeframe"); //Item subHeader
-        mHelpLiveo.add("All Time", R.mipmap.app_icon);
+        mHelpLiveo.add("Home");
+        mHelpLiveo.addSeparator(); // Item separator
+        mHelpLiveo.add("All Time");
 //        mHelpLiveo.addSeparator(); // Item separator
 
         with(this).startingPosition(0) //Starting position in the list
@@ -104,27 +107,57 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         this.setElevationToolBar(position != 0 ? 15 : 0);
     }
 
+    //updates the drawer from the user adt
+    public void updateDrawerFromUser(UserHelper u){
+        if (u.isUserSet()){
+            // User Information
+            this.userName.setText(u.username());
+            this.userEmail.setText(u.realname());
+            this.userPhoto.setImageResource(R.drawable.ic_rudsonlive);
+
+            this.userBackground.setImageResource(R.drawable.ic_user_background_first);
+        }else {
+            this.userName.setText("Null");
+            this.userEmail.setText("Null");
+        }
+
+        Log.w("INFO" , "user " + (user.isUserSet() == true? "true": "false"));
+    }
+
     //handles the changing of the fragments
     @Override
     public void onItemClick(int position) {
         Fragment mFragment;
         FragmentManager mFragmentManager = getSupportFragmentManager();
 
-        switch (position){
-            case 0:
-                mFragment = new ViewPagerFragment();
-                break;
+        Log.w("INFO", "Position= " + position);
 
-            default:
-                mFragment = TopListFragment.newInstance(mHelpLiveo.get(position).getName());
-                break;
+        int elev = 0; //the elevation of the toolbar
+
+        if (!user.isUserSet()){
+            mFragment = new LoginFragment();
+            elev = 15;
+
+        } else {
+            switch (position){
+                case 0:
+                    mFragment = new HomeFragment();
+                    break;
+                case 1:
+                    mFragment = new ViewPagerFragment();
+                    break;
+                default:
+                    mFragment = TopListFragment.newInstance(mHelpLiveo.get(position).getName());
+                    break;
+            }
         }
 
-        if (mFragment != null){
+        if (mFragment != null) {
             mFragmentManager.beginTransaction().replace(R.id.container, mFragment).commit();
         }
 
-        setElevationToolBar(position != 0 ? 15 : 0);
+        setElevationToolBar(elev);
+
     }
 
     @Override
@@ -156,4 +189,15 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
     };
 
     //endregion
+
+    //receives the user information from fragment
+    public void recieveUserInfo(String username, String realname){
+        user.updateInfo(username,realname);
+
+        if (user.isUserSet()){
+            this.userName.setText(username);
+            this.userEmail.setText(realname);
+        }
+
+    }
 }
