@@ -156,6 +156,7 @@ public final class LfmApiHelper {
             if (response != null){
                 r.add(response.getString("name")); //the user name
                 r.add(response.getString("realname")); //the real name
+                r.add(response.getString("image")); //the image
             }
         }
         catch (Exception e){

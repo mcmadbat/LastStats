@@ -86,8 +86,10 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         // Creating items navigation
         mHelpLiveo = new HelpLiveo();
         mHelpLiveo.add("Home");
-        mHelpLiveo.addSeparator(); // Item separator
-        mHelpLiveo.add("All Time");
+        //mHelpLiveo.addSeparator(); // Item separator
+        mHelpLiveo.add("Top Artists");
+        mHelpLiveo.add("Top Albums");
+        mHelpLiveo.add("Top tracks");
 //        mHelpLiveo.addSeparator(); // Item separator
 
         with(this).startingPosition(0) //Starting position in the list
@@ -143,11 +145,18 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
                 case 0:
                     mFragment = new HomeFragment();
                     break;
-                case 1:
-                    mFragment = new ViewPagerFragment();
+                case 1: // Top Artists
+                    mFragment =  ViewPagerFragment.newInstance("artist");
+                    break;
+                case 2: // Top Albums
+                    mFragment = ViewPagerFragment.newInstance("album");
+                    break;
+                case 3: // Top Tracks
+                    mFragment = ViewPagerFragment.newInstance("track");
                     break;
                 default:
-                    mFragment = TopListFragment.newInstance(mHelpLiveo.get(position).getName());
+                    //should never go here
+                    mFragment = ViewPagerFragment.newInstance(mHelpLiveo.get(position).getName());
                     break;
             }
         }

@@ -1,8 +1,10 @@
 package me.mcmadbat.laststats.Fragments;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -55,27 +57,36 @@ public class LoginFragment extends Fragment {
         btnEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String u = userIn.getText().toString();
 
-                List<String> info = LfmApiHelper.getUserInfo(u);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setView(getActivity().getLayoutInflater().inflate(R.layout.dialog_loading, null));
 
-                if (info.size() != 0){
-                    //user was found
-                    ((MainActivity)getActivity()).recieveUserInfo(info.get(0),info.get(1));
+                AlertDialog dialog = builder.create();
 
-                    Fragment mFragment;
-                    FragmentManager mFragmentManager = getActivity().getSupportFragmentManager();
+                //todo handle not dismissing it
+                dialog.show();
 
-                    mFragment = TopListFragment.newInstance("Artist");
-
-                    mFragmentManager.beginTransaction().replace(R.id.container, mFragment).commit();
-
-                } else {
-                    Toast t = Toast.makeText(getActivity().getApplicationContext(),"User not found. Please try again.", Toast.LENGTH_LONG);
-                    t.show();
-
-                    userIn.setText("");
-                }
+//                String u = userIn.getText().toString();
+//
+//                List<String> info = LfmApiHelper.getUserInfo(u);
+//
+//                if (info.size() != 0){
+//                    //user was found
+//                    ((MainActivity)getActivity()).recieveUserInfo(info.get(0),info.get(1));
+//
+//                    Fragment mFragment;
+//                    FragmentManager mFragmentManager = getActivity().getSupportFragmentManager();
+//
+//                    mFragment = new HomeFragment();
+//
+//                    mFragmentManager.beginTransaction().replace(R.id.container, mFragment).commit();
+//
+//                } else {
+//                    Toast t = Toast.makeText(getActivity().getApplicationContext(),"User not found. Please try again.", Toast.LENGTH_LONG);
+//                    t.show();
+//
+//                    userIn.setText("");
+//                }
             }
         });
 

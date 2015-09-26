@@ -1,5 +1,6 @@
 package me.mcmadbat.laststats.Fragments;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,7 +13,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,18 +34,23 @@ import me.mcmadbat.laststats.R;
  */
 public class TopListFragment extends Fragment {
 
-    private boolean mSearchCheck;
-    private static final String TEXT_FRAGMENT = "";
+    private static String _type = "";
+    private static String _span = "";
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    public static TopListFragment newInstance(String text){
+    public static TopListFragment newInstance(String type, String span){
         TopListFragment mFragment = new TopListFragment();
         Bundle mBundle = new Bundle();
-        mBundle.putString(TEXT_FRAGMENT, text);
+
+        _type = type;
+        mBundle.putString("type", type);
+        mBundle.putString("span", span);
+
         mFragment.setArguments(mBundle);
+
         return mFragment;
     }
 
@@ -51,7 +59,6 @@ public class TopListFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        String currentMode = (getArguments().getString(TEXT_FRAGMENT));
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.cardList);
 
@@ -61,33 +68,41 @@ public class TopListFragment extends Fragment {
 
         List<CardInfo> foo = new ArrayList<CardInfo>();
 
-        List<String> answer;
-
-        if (currentMode == "Artists"){
-            answer = LfmApiHelper.getTopArtists("mcmadbat3",null,"20", null);
-        } else if (currentMode == "Albums") {
-            answer = LfmApiHelper.getTopAlbums("mcmadbat3",null,"20", null);
-        } else {
-            answer = LfmApiHelper.getTopTracks("mcmadbat3",null,"20", null);
-        }
-
-        for (int i = 0 ; i <answer.size();i++) {
+        for (int i = 0; i < 15 ; i ++) {
             CardInfo temp = new CardInfo();
-
-            String[] info = answer.get(i).split("~~");
-
-            temp.count = info[1];
-            temp.title = info[0];
+            temp.count = getArguments().getString("span");
+            temp.title = getArguments().getString("type");
             foo.add(temp);
         }
 
         mAdapter = new CardListAdaptor(foo);
+
         mRecyclerView.setAdapter(mAdapter);
 
-        rootView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT ));
+        ViewGroup.LayoutParams n = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+        rootView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+        final ViewTreeObserver observer= mRecyclerView.getViewTreeObserver();
+
+        observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int x = mRecyclerView.getHeight();
+                //here we set the recyclerview to be smaller so that it fits the screen
+                //TODO find a way to directly change the offset for different devices?
+                mRecyclerView.setLayoutParams(new RelativeLayout.LayoutParams((x-150), ViewGroup.LayoutParams.MATCH_PARENT));
+            }
+        });
+
         return rootView;
     }
 
+    @Override
+    public void onResume() {
+
+        super.onResume();
+    }
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -105,18 +120,4 @@ public class TopListFragment extends Fragment {
         return true;
     }
 
-    private SearchView.OnQueryTextListener onQuerySearchView = new SearchView.OnQueryTextListener() {
-        @Override
-        public boolean onQueryTextSubmit(String s) {
-            return false;
-        }
-
-        @Override
-        public boolean onQueryTextChange(String s) {
-            if (mSearchCheck){
-                // implement your search here
-            }
-            return false;
-        }
-    };
 }

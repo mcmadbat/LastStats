@@ -83,6 +83,10 @@ public final class UserHelper {
                 data = new String(bytes);
                 String[] info = data.split("~~");
 
+                if (info[0].equalsIgnoreCase("null") || info[0] == ""){
+                    return false;
+                }
+
                 _username = info[0];
                 Log.w("INFO", "Read from memory username = " + _username);
                 _realname = info[1];
@@ -90,7 +94,7 @@ public final class UserHelper {
                 return true;
 
             } catch (Exception e){
-
+                return false;
             }
         }
 

@@ -9,9 +9,9 @@
         android:text="OK"
         android:textSize="30sp"
         android:id="@+id/btnTest"
-        android:layout_marginTop="156dp"
-        android:layout_below="@+id/txtHome"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="105dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -20,5 +20,12 @@
         android:id="@+id/txtHome"
         android:textSize="100sp"
         android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView2"
+        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>
