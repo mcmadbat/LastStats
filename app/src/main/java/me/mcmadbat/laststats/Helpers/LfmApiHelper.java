@@ -52,8 +52,8 @@ public final class LfmApiHelper {
                 JSONObject temp = arr.getJSONObject(i);
                 String line ="";
                 line += temp.getString("name") + "~~";
-                line += " ~~";
-                //line += temp.getString("playcount") + "~~";
+                //line += " ~~";
+                line += temp.getString("playcount") + " Plays~~";
 
                 String rank = temp.getJSONObject("@attr").getString("rank");
                 line += rank + "~~";
@@ -97,7 +97,7 @@ public final class LfmApiHelper {
                 String line ="";
                 line += temp.getString("name") + "~~";
                 //line += temp.getString("playcount") + "~~";
-                line += temp.getJSONObject("artist").getString("name") + "~~";
+                line += "by " + temp.getJSONObject("artist").getString("name") + "~~";
                 String rank = temp.getJSONObject("@attr").getString("rank");
                 line += rank + "~~";
                 r.add(line);
@@ -141,7 +141,7 @@ public final class LfmApiHelper {
                 line += temp.getString("name") + "~~";
 
                 //line += temp.getString("playcount") + "~~";
-                line += temp.getJSONObject("artist").getString("name") + "~~";
+                line += "by " + temp.getJSONObject("artist").getString("name") + "~~";
 
                 String rank = temp.getJSONObject("@attr").getString("rank");
                 line += rank + "~~";

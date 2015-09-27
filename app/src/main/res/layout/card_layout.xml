@@ -17,7 +17,8 @@
             android:layout_height="110dp"
             android:id="@+id/card_img"
             android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/txtRank" />
+            android:layout_toEndOf="@+id/txtRank"
+            android:src="@mipmap/vinyl_icon" />
 
         <TextView
             android:layout_width="40dp"
