@@ -13,10 +13,9 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
             android:id="@+id/card_img"
-            android:src = "@mipmap/app_icon"
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/txtRank" />
 
@@ -42,8 +41,8 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:text="Sample Name"
+            android:layout_height="55dp"
+            android:text="Sample Name123123123123123"
             android:textSize="20dp"
             android:id="@+id/txtCount"
             android:paddingLeft="10dp"

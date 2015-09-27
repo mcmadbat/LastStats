@@ -52,7 +52,11 @@ public final class LfmApiHelper {
                 JSONObject temp = arr.getJSONObject(i);
                 String line ="";
                 line += temp.getString("name") + "~~";
-                line += temp.getString("playcount") + "~~";
+                line += " ~~";
+                //line += temp.getString("playcount") + "~~";
+
+                String rank = temp.getJSONObject("@attr").getString("rank");
+                line += rank + "~~";
                 r.add(line);
             }
         }
@@ -92,7 +96,10 @@ public final class LfmApiHelper {
                 JSONObject temp = arr.getJSONObject(i);
                 String line ="";
                 line += temp.getString("name") + "~~";
-                line += temp.getString("playcount") + "~~";
+                //line += temp.getString("playcount") + "~~";
+                line += temp.getJSONObject("artist").getString("name") + "~~";
+                String rank = temp.getJSONObject("@attr").getString("rank");
+                line += rank + "~~";
                 r.add(line);
             }
         }
@@ -132,7 +139,12 @@ public final class LfmApiHelper {
                 JSONObject temp = arr.getJSONObject(i);
                 String line ="";
                 line += temp.getString("name") + "~~";
-                line += temp.getString("playcount") + "~~";
+
+                //line += temp.getString("playcount") + "~~";
+                line += temp.getJSONObject("artist").getString("name") + "~~";
+
+                String rank = temp.getJSONObject("@attr").getString("rank");
+                line += rank + "~~";
                 r.add(line);
             }
         }
@@ -156,7 +168,10 @@ public final class LfmApiHelper {
             if (response != null){
                 r.add(response.getString("name")); //the user name
                 r.add(response.getString("realname")); //the real name
-                r.add(response.getString("image")); //the image
+
+                JSONArray images = response.getJSONArray("image");
+                JSONObject image = images.getJSONObject(1);
+                r.add(image.getString("#text"));
             }
         }
         catch (Exception e){

@@ -56,7 +56,8 @@ public class CardListAdaptor extends RecyclerView.Adapter<CardListAdaptor.CardLi
 
         //sets the information
         cardListViewHolder.title.setText(t);
-        cardListViewHolder.count.setText(data.get(i).count + " plays");
+        cardListViewHolder.count.setText(data.get(i).count);
+        //cardListViewHolder.count.setText(data.get(i).count + " plays");
         cardListViewHolder.rank.setText(Integer.toString(i+1));
     }
 

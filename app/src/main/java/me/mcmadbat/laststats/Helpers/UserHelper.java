@@ -18,12 +18,23 @@ public final class UserHelper {
     private static String _username;
     private static String _realname;
 
+    private static File _profilePic;
+
     File _f;
 
     //the constructor
     public UserHelper(File f) {
         _f = f;
         _isUserSet = getFromMemory(); //does an initial get from memory
+    }
+
+    public void delete(){
+        _username = "";
+        _profilePic = null;
+
+        _realname = "";
+        saveToMemory();
+        _isUserSet = false;
     }
 
     //gets whether there is a user
@@ -38,6 +49,8 @@ public final class UserHelper {
     public String realname(){
         return _isUserSet == false? "" : _realname;
     }
+
+    public File profilePic() {return _isUserSet == false? null : _profilePic;}
 
     //saves the information to memory
     public Boolean saveToMemory(){
@@ -101,7 +114,7 @@ public final class UserHelper {
         return false;
     }
 
-    public Boolean updateInfo(String username, String realname){
+    public Boolean updateInfo(String username, String realname, File profilePic){
         if (username == ""){
             return false;
         }
@@ -109,6 +122,8 @@ public final class UserHelper {
 
         _username = username == "" ? _username: username;
         _realname = realname == "" ? _realname: realname;
+
+        _profilePic = profilePic == null? _profilePic: profilePic;
 
         return this.saveToMemory();
     }

@@ -7,4 +7,5 @@ package me.mcmadbat.laststats.Helpers;
 public class CardInfo {
     public String title;
     public String count;
+    public int rank; //the rank of the card
 }

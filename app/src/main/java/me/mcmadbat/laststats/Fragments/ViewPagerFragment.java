@@ -28,12 +28,14 @@ public class ViewPagerFragment extends Fragment {
     private List<TabPagerItem> mTabs = new ArrayList<>();
 
     public String _type; //artist album etc...
+    public String _user; //the username
 
     private int offset = 0;
 
-    public static ViewPagerFragment newInstance(String type){
+    public static ViewPagerFragment newInstance(String type, String user){
         ViewPagerFragment m = new ViewPagerFragment();
         m._type = type;
+        m._user = user;
         return m;
     }
 
@@ -45,10 +47,10 @@ public class ViewPagerFragment extends Fragment {
 
 
     private void createTabPagerItem(){
-        mTabs.add(new TabPagerItem("Overall", TopListFragment.newInstance(_type, "overall")));
-        mTabs.add(new TabPagerItem("Year", TopListFragment.newInstance(_type, "12month" )));
-        mTabs.add(new TabPagerItem("Month", TopListFragment.newInstance(_type , "1month")));
-        mTabs.add(new TabPagerItem("Week", TopListFragment.newInstance(_type , "7day")));
+        mTabs.add(new TabPagerItem("Overall", TopListFragment.newInstance(_type, "overall", _user)));
+        mTabs.add(new TabPagerItem("Year", TopListFragment.newInstance(_type, "12month",_user )));
+        mTabs.add(new TabPagerItem("Month", TopListFragment.newInstance(_type , "1month",_user)));
+        mTabs.add(new TabPagerItem("Week", TopListFragment.newInstance(_type , "7day",_user)));
     }
 
     @Override
