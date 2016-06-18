@@ -1,12 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" >
+<items version="2" />
 
-    <item
-        jar="C:\Users\mcmad\Documents\GitHub\LastFMStats\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="5db1ccb8df67e746b55d153536e27a8a0b097b01">
-        <dex dex="C:\Users\mcmad\Documents\GitHub\LastFMStats\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_077a53c54323a0430d36c9a7c11256858a45efa4\classes.dex" />
-    </item>
-
-</items>

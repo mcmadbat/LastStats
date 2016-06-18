@@ -167,11 +167,23 @@ public final class LfmApiHelper {
         List<String> r = new ArrayList<String>();
         try {
             JSONObject response = new JSONObject(httpHelper.HttpGet(url));
+            Log.wtf("INFO", url);
             response = response.getJSONObject("user");
 
             if (response != null){
-                r.add(response.getString("name")); //the user name
-                r.add(response.getString("realname")); //the real name
+
+                if (response.isNull("name")){
+                    r.add("noname");
+                } else {
+                    r.add(response.getString("name")); //the user name
+                }
+
+                if (response.isNull("realname")){
+                    r.add("No Name");
+                } else {
+                    r.add(response.getString("realname")); //the real name
+                }
+
 
                 JSONArray images = response.getJSONArray("image");
                 JSONObject image = images.getJSONObject(1);

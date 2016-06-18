@@ -62,7 +62,13 @@ public class DownloadTopList extends AsyncTask<String, Void, List<CardInfo>> {
                 CardInfo temp = new CardInfo();
                 temp.title = info[0];
                 temp.count = info[1];
-                temp.albumCoverUrl = info[3];
+
+                if (info.length == 4){
+                    temp.albumCoverUrl = info[3];
+                } else {
+                    temp.albumCoverUrl = "http://www.songsinger.info/Album%20covers/tr/single.jpg";
+                }
+
 
                 // sets img directly from url
                 HttpHelper helper = new HttpHelper();
@@ -80,7 +86,7 @@ public class DownloadTopList extends AsyncTask<String, Void, List<CardInfo>> {
             return toReturn;
         }
         catch (Exception e){
-            Log.wtf("INFO", "Downloading of Top lists failed!: " + e.getMessage());
+            Log.wtf("INFO", "Downloading of Top lists failed!: " + e.toString());
             Log.wtf("INFO", e.getMessage());
             return null;
         }
