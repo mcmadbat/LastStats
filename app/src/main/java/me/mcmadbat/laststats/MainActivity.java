@@ -18,9 +18,9 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.List;
 
-import br.liveo.Model.HelpLiveo;
 import br.liveo.interfaces.OnItemClickListener;
 import br.liveo.interfaces.OnPrepareOptionsMenuLiveo;
+import br.liveo.model.HelpLiveo;
 import br.liveo.navigationliveo.NavigationLiveo;
 import me.mcmadbat.laststats.Fragments.LoginFragment;
 import me.mcmadbat.laststats.Fragments.ViewPagerFragment;
@@ -69,6 +69,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+        //TODO: find a better way to change users
         if (id == R.id.Change_User) {
             user.delete();
             Toast t = Toast.makeText(getApplicationContext(),"Please enter user again", Toast.LENGTH_SHORT);
@@ -221,7 +222,7 @@ public class MainActivity extends NavigationLiveo implements OnItemClickListener
             String txt = "Graph graphic by reepik from Flaticon is licensed under CC BY 3.0 Made with " +
                     "Logo Maker";
             Toast t = Toast.makeText(getApplicationContext(),txt,Toast.LENGTH_SHORT);
-            t.show();
+            //t.show();
         }
     };
 

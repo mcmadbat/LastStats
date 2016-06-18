@@ -2,10 +2,13 @@ package me.mcmadbat.laststats.Helpers;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,9 +62,16 @@ public class DownloadTopList extends AsyncTask<String, Void, List<CardInfo>> {
                 CardInfo temp = new CardInfo();
                 temp.title = info[0];
                 temp.count = info[1];
+                temp.albumCoverUrl = info[3];
+
+                // sets img directly from url
+                HttpHelper helper = new HttpHelper();
+                InputStream iStream = helper.HttpGetStream(temp.albumCoverUrl);
+                Bitmap bMap = BitmapFactory.decodeStream(iStream);
+                temp.bMap = bMap;
 
                // int rank = Integer.getInteger(info[2]); //have to order it lol
-                toReturn.add( temp);
+                toReturn.add(temp);
             }
 
             Log.w("INFO", "finished downloading info for " + _type + " " + _span);
@@ -70,7 +80,7 @@ public class DownloadTopList extends AsyncTask<String, Void, List<CardInfo>> {
             return toReturn;
         }
         catch (Exception e){
-            Log.wtf("INFO", "Downloading of Top lists failed!");
+            Log.wtf("INFO", "Downloading of Top lists failed!: " + e.getMessage());
             Log.wtf("INFO", e.getMessage());
             return null;
         }

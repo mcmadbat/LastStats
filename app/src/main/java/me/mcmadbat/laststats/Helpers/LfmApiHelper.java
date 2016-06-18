@@ -57,6 +57,8 @@ public final class LfmApiHelper {
 
                 String rank = temp.getJSONObject("@attr").getString("rank");
                 line += rank + "~~";
+                line += temp.getJSONArray("image").getJSONObject(2).getString("#text") + "~~"; // get the small img file
+
                 r.add(line);
             }
         }
@@ -100,6 +102,7 @@ public final class LfmApiHelper {
                 line += "by " + temp.getJSONObject("artist").getString("name") + "~~";
                 String rank = temp.getJSONObject("@attr").getString("rank");
                 line += rank + "~~";
+                line += temp.getJSONArray("image").getJSONObject(2).getString("#text") + "~~"; // get the small img file
                 r.add(line);
             }
         }
@@ -145,6 +148,7 @@ public final class LfmApiHelper {
 
                 String rank = temp.getJSONObject("@attr").getString("rank");
                 line += rank + "~~";
+                line += temp.getJSONArray("image").getJSONObject(2).getString("#text") + "~~"; // get the small img file
                 r.add(line);
             }
         }
@@ -180,6 +184,7 @@ public final class LfmApiHelper {
 
         return r;
     }
+
     //endregion
 
 }

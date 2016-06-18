@@ -1,7 +1,10 @@
 package me.mcmadbat.laststats.Adaptors;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +13,12 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
 
 import me.mcmadbat.laststats.Helpers.CardInfo;
+import me.mcmadbat.laststats.Helpers.HttpHelper;
 import me.mcmadbat.laststats.R;
 
 /**
@@ -49,16 +55,26 @@ public class CardListAdaptor extends RecyclerView.Adapter<CardListAdaptor.CardLi
 
     @Override
     public void onBindViewHolder(CardListViewHolder cardListViewHolder, int i) {
-        String t = data.get(i).title;
+        CardInfo cardInfo = data.get(i);
+        String t = cardInfo.title;
         if (t.length() >= 43) {
             t = t.substring(0,40) + "...";
         }
 
-        //sets the information
-        cardListViewHolder.title.setText(t);
-        cardListViewHolder.count.setText(data.get(i).count);
-        //cardListViewHolder.count.setText(data.get(i).count + " plays");
-        cardListViewHolder.rank.setText(Integer.toString(i+1));
+        try {
+            //sets the information
+            cardListViewHolder.title.setText(t);
+            cardListViewHolder.count.setText(cardInfo.count);
+            //cardListViewHolder.count.setText(data.get(i).count + " plays");
+            cardListViewHolder.rank.setText(Integer.toString(i+1));
+
+            cardListViewHolder.img.setImageBitmap(cardInfo.bMap);
+
+
+        } catch (Exception e){
+            Log.wtf("INFO", e.getMessage());
+        }
+
     }
 
     @Override

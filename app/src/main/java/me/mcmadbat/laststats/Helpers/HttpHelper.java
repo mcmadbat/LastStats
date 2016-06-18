@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.StrictMode;
+import android.renderscript.ScriptGroup;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -64,6 +65,27 @@ public final class HttpHelper {
         }catch (Exception e){
             Log.e("INFO", "Exception doing HTTP GET: " + e.getMessage());
             return "Exception: " + e.getMessage();
+        }
+    }
+
+    public InputStream HttpGetStream (String url){
+        try {
+            URL end = new URL(url);
+            HttpURLConnection request = (HttpURLConnection) end.openConnection();
+
+            //the parameters for the POST call
+            Log.v("INFO", "HTTP call to: " + url);
+
+            request.setChunkedStreamingMode(0);
+
+            //gets the response
+            InputStream in = request.getInputStream();
+
+            return in;
+
+        }catch (Exception e){
+            Log.e("INFO", "Exception doing HTTP GET: " + e.getMessage());
+            return null;
         }
     }
 
